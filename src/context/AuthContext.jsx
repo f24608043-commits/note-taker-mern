@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       try {
         console.log("🔍 Initializing auth...");
         const { data: { session } } = await supabase.auth.getSession();
-        console.log("👤 Session found:", session?.user?.email);
+        console.log("👤 Auth session user:", session?.user);
         setUser(session?.user || null);
       } catch (err) {
         console.error("❌ Auth init error:", err);
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     init();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("🔄 Auth state changed:", _event, session?.user?.email);
+      console.log("🔄 Auth state changed:", _event, session?.user);
       setUser(session?.user || null);
       if (!session?.user) navigate('/login', { replace: true });
     });

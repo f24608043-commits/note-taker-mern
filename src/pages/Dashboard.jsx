@@ -25,9 +25,9 @@ const Dashboard = () => {
 
     const fetchData = async () => {
       try {
-        console.log("🔍 Fetching notes for user:", user.id);
+        console.log("👤 User ID:", user?.id);
         const notes = await getNotes(user.id);
-        console.log("✅ Notes fetched:", notes.length);
+        console.log("📊 Notes loaded:", notes.length);
 
         setStats({
           total: notes.length,
