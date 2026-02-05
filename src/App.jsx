@@ -1,19 +1,25 @@
 // src/App.jsx
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Notes from './pages/Notes';
-import Calendar from './pages/Calendar';
 import Navbar from './components/Navbar';
+import Loading from './components/Loading';
+
+// Lazy load pages for performance
+const Login = lazy(() => import('./pages/Login'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Notes = lazy(() => import('./pages/Notes'));
+const Calendar = lazy(() => import('./pages/Calendar'));
 
 // Layout that provides contexts to all routes
 const RootLayout = () => {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <Outlet />
+        <Suspense fallback={<Loading />}>
+          <Outlet />
+        </Suspense>
       </ThemeProvider>
     </AuthProvider>
   );
@@ -28,7 +34,9 @@ const router = createBrowserRouter([
         element: (
           <>
             <Navbar />
-            <Outlet />
+            <Suspense fallback={<Loading />}>
+              <Outlet />
+            </Suspense>
           </>
         ),
         children: [
